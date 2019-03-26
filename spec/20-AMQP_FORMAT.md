@@ -1,6 +1,6 @@
 # AMQP format
 
-The Advanced Message Queuing Protocol (AMQP) is an open internet protocol for
+The [Advanced Message Queuing Protocol (AMQP)](https://www.amqp.org/) is an open internet protocol for
 business messaging. It defines a binary wire-level protocol that allows for the
 reliable exchange of business messages between two parties. AMQP can be used as
 a protocol for asynchronous communication between components of an application.
