@@ -13,21 +13,18 @@ protocol. So using them is fully supported by all existing clients.
 ## Binary `traceparent` vs. list of binary values
 
 There are multiple ways to implement a `traceparent`. It can either be
-implemented as string (http-like), binary protocol (like for grpc) or list of
-separate binary values (`trace-id`, `parent-id`, `trace-flags`).
+implemented as string (http-like), binary protocol or list of separate 
+binary values (`trace-id`, `parent-id`, `trace-flags`).
 
 Strings duplicating the size of a field, using list of binaries will require to
 redefine the way the field serialized, parsed, and versioned. So re-using binary
 protocol looks like a logical solution.
 
-## AMQP map for `tracestate`
+## AMQP string for `tracestate`
 
-The benefit of using a built-in map type for AMQP is that serialization and
-de-serialization of the field is built in and doesn't require any custom
-implementation for parsing it.
-
-Maps in AMQP preserving the order so there is no conflict with the semantics of
-the field.
+The benefit of using a string http-like encoding for AMQP is that no serialization/de-serialization 
+is required for blind propagation and interoperability with HTTP version of the protocol 
+in broker services (HTTP-over-AMQP and vice versa scenarios) or user applications. 
 
 ## Why use both - application and message properties
 
