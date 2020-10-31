@@ -9,6 +9,7 @@ Specification for distributed tracing context propagation format:
 - Trace Context: AMQP protocol
   [Report](https://w3c.github.io/trace-context-amqp/).
   Status: Editor's draft.
+  - See [RATIONALE](RATIONALE.md) for considerations of the format.
   - Changes are tracked on GitHub, communicated in meetings and e-mails
     distribution list.
 
