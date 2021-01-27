@@ -10,24 +10,25 @@ queue server for a long time.
 Complex types are well defined and widely used in AMQP and they are part of a
 protocol. So using them is fully supported by all existing clients.
 
+The problem of using complex types, however, is that this use implies parsing of
+fields even when they need to be propagated without modification (which is a hot path).
+So the tradeoff is CPU required to parse complex types vs. extra bytes on the wire.
+
 ## Binary `traceparent` vs. list of binary values
 
 There are multiple ways to implement a `traceparent`. It can either be
-implemented as string (http-like), binary protocol (like for grpc) or list of
+implemented as string (http-like), binary protocol or list of
 separate binary values (`trace-id`, `parent-id`, `trace-flags`).
 
 Strings duplicating the size of a field, using list of binaries will require to
 redefine the way the field serialized, parsed, and versioned. So re-using binary
 protocol looks like a logical solution.
 
-## AMQP map for `tracestate`
+## AMQP string for `tracestate`
 
-The benefit of using a built-in map type for AMQP is that serialization and
-de-serialization of the field is built in and doesn't require any custom
-implementation for parsing it.
-
-Maps in AMQP preserving the order so there is no conflict with the semantics of
-the field.
+The benefit of using a string http-like encoding for AMQP is that no serialization/de-serialization
+is required for blind propagation and interoperability with HTTP version of the protocol
+in broker services (HTTP-over-AMQP and vice versa scenarios) or user applications.
 
 ## Why use both - application and message properties
 
@@ -84,3 +85,13 @@ very small. Those are rare names. So prefix doesn’t add much, but increases a
 chance for an error and interoperability.
 
 So suggestion is to keep the name un-prefixed.
+
+## String encoding
+
+Note that strings are defined as UTF-8 in AMQP. This theoretically opens the opportunity
+to widen the list of permitted characters for `tracestate`. Permitting more characters,
+however, will require declaring encoding protocols between HTTP-like headers and full unicode
+representation. This may lead to conversion errors and worse inter-operability.
+
+Since both fields `traceparent` and `tracestate` are designed to propagate opaque utility
+information, globalization and localization questions are not relevant here.
