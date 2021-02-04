@@ -49,7 +49,7 @@ there anything in AMQP protocol that can be used to carry this context?
 ## `traceparent` AMQP format
 
 The field `traceparent` MUST be encoded and decoded using [binary
-protocol](..\extension-binary.html) and stored as a binary type defined in
+protocol](https://w3c.github.io/trace-context-binary/) and stored as a binary type defined in
 section
 [1.6.19](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#type-binary)
 of AMQP specification.
@@ -58,21 +58,12 @@ Property name MUST be `traceparent` - all lowercase without delimiters.
 
 ## `tracestate` AMQP format
 
-The field `tracestate` MUST be encoded and decoded as a string to string map.
-See definition of type map in section
-[1.6.23](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#type-map)
+The field `tracestate` MUST be encoded and decoded as a string.
+See definition of string in section
+[1.6.20](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#type-string)
 of AMQP specification.
 
----
-
-*NOTE about the strings encoding*
-
-Please note that strings are defined as UTF-8 in AMQP. Should anything be
-different from the HTTP encoded opaque strings? Should we allow to benefit from
-wider character set for better encoding of opaque values? Or this will be too
-error prone?
-
----
+`tracestate` field MUST be encoded according to [HTTP Trace Context spec](https://www.w3.org/TR/trace-context/#tracestate-field), however multiple properties with `tracestate` are not permitted.
 
 Property name MUST be `tracestate` - all lowercase without delimiters.
 
